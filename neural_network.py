@@ -68,9 +68,27 @@ class Neural_Network:
         cache = (linear_cache, activation_cache)
         return a, cache
     
+    def full_forward_model(self):
+        
+        self.initialize_weights()
+        caches = []
+        a = self.x
+        for i in range(len(self.layer_dims) - 1):
+            a, cache = self.forward_linear_activation(a, 
+                                                 self.parameters["W" + str(i)],
+                                                 self.parameters["b" + str(i)],
+                                                 "relu")
+            caches.append(cache)
+        a, cache = self.forward_linear_activation(a, 
+                                                 self.parameters["W" + str(i)],
+                                                 self.parameters["b" + str(i)],
+                                                 "sigmoid")
+        caches.append(cache)
+        return a, caches
+    
     def loss_function(self):
         """
-        
+        Function to calculate the loss function
         """
         pass
     
