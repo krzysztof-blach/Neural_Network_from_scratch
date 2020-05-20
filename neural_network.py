@@ -74,23 +74,29 @@ class Neural_Network:
         caches = []
         a = self.x
         for i in range(len(self.layer_dims) - 1):
-            a, cache = self.forward_linear_activation(a, 
+            a_prev = a
+            a, cache = self.forward_linear_activation(a_prev, 
                                                  self.parameters["W" + str(i)],
                                                  self.parameters["b" + str(i)],
                                                  "relu")
             caches.append(cache)
-        a, cache = self.forward_linear_activation(a, 
+        a_final, cache = self.forward_linear_activation(a, 
                                                  self.parameters["W" + str(i)],
                                                  self.parameters["b" + str(i)],
                                                  "sigmoid")
         caches.append(cache)
-        return a, caches
+        return a_final, caches
     
-    def loss_function(self):
+    def compute_cost(self):
         """
         Function to calculate the loss function
         """
-        pass
+        m = np.size(self.x)[1]
+        a_final = self.full_forward_model()[0]
+        cost = - 1 / m * np.sum(np.dot(self.y, np.log(a_final.T)) +
+                                np.dot(1 - self.y, np.log((1 - a_final).T)))
+        cost = np.squeeze(cost)
+        return cost
     
     def backpropagation(self):
         pass
