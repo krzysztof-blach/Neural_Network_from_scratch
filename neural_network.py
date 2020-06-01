@@ -18,14 +18,14 @@ class Neural_Network:
         
     def sigmoid(self, z):
         """
-        Function to calculate sigmoid function on (multidimensional) vector z
+        Calculates sigmoid function on (multidimensional) vector z
         Returns: result of sigmoid function as well as the input vector z
         """
         return 1 /( 1 + np.exp(-z)), z
     
     def relu(self, z):
         """
-        Function to calculate the ReLU function on (multidimensional) vector z
+        Calculates the ReLU function on (multidimensional) vector z
         Returns: result of relu function as well as the input vector z
         """
         return np.maximum(0, z), z
@@ -33,7 +33,7 @@ class Neural_Network:
         
     def initialize_weights(self):
         """
-        Function to initialize weights of the network for each layer
+        Initializes weights of the network for each layer
         Weights W are rondomly initialized
         Coeeficients b are initialized as zeros     
         """
@@ -48,7 +48,7 @@ class Neural_Network:
             
     def forward_linear_step(self, a_prev, w, b):
         """
-        Function to compute the linear part of single forward propagation step, namely multiplication of
+        Computes the linear part of single forward propagation step, namely multiplication of
         weights and result from previous layer
         """
         z = np.dot(w, a_prev) + b
@@ -58,7 +58,7 @@ class Neural_Network:
     
     def forward_linear_activation(self, a_prev, w, b, activation_func):
         """
-        Function to calculate linear and activation parts of a single forward step
+        Calculates linear and activation parts of a single forward step
         """
         z, linear_cache = self.forward_linear_step(a_prev, w, b)
         if activation_func == "relu":
@@ -68,6 +68,49 @@ class Neural_Network:
         cache = (linear_cache, activation_cache)
         return a, cache
     
+<<<<<<< HEAD
+    def loss_function(self, a_final):
+        """
+        Computes the cost function
+        """
+        m = self.y.shape[1]
+        cost = -1 / m * np.sum(np.dot(self.y, np.log(a_final.T)) 
+                               + np.dot((1-self.y), np.log(1 - a_final.T)))
+        cost = np.squeeze(cost)
+        assert(cost.shape == ())
+        return cost
+    
+    def sigmoid_backward(self, a, activation):
+        pass
+    
+    
+    def relu_backward(self, a, activation):
+        pass
+        
+    
+    def linear_backward(self, dz, cache):
+        """
+        Computes the backward propagation on linear step
+        """
+        m = self.y.shape[1]
+        a_prev, W, b = cache
+        da_prev = np.dot(W.T, dz)
+        dW = 1 / m * np.dot(dz, a_prev.T)
+        db = 1 / m * np.sum(dz, axis=1, keepdims=True)
+        
+        assert(da_prev.shape == a_prev.shape)
+        assert(dW.shape == W.shape)
+        assert(db.shape == b.shape)
+        
+        return da_prev, dW, db
+        
+    
+    def linear_activation_backward(self):
+        pass
+    
+    def full_model_backward(self):
+        pass
+=======
     def full_forward_model(self):
         
         self.initialize_weights()
@@ -97,8 +140,9 @@ class Neural_Network:
                                 np.dot(1 - self.y, np.log((1 - a_final).T)))
         cost = np.squeeze(cost)
         return cost
+>>>>>>> master
     
-    def backpropagation(self):
+    def update_weights(self):
         pass
     
     def model(self):
