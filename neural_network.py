@@ -67,18 +67,37 @@ class Neural_Network:
             a, activation_cache = self.sigmoid(z)
         cache = (linear_cache, activation_cache)
         return a, cache
+
+    def full_forward_model(self):
+        
+        self.initialize_weights()
+        caches = []
+        a = self.x
+        for i in range(len(self.layer_dims) - 1):
+            a_prev = a
+            a, cache = self.forward_linear_activation(a_prev, 
+                                                 self.parameters["W" + str(i)],
+                                                 self.parameters["b" + str(i)],
+                                                 "relu")
+            caches.append(cache)
+        a_final, cache = self.forward_linear_activation(a, 
+                                                 self.parameters["W" + str(i)],
+                                                 self.parameters["b" + str(i)],
+                                                 "sigmoid")
+        caches.append(cache)
+        return a_final, caches
     
-<<<<<<< HEAD
-    def loss_function(self, a_final):
+    def compute_cost(self):
         """
-        Computes the cost function
+        Calculates the loss function
         """
-        m = self.y.shape[1]
-        cost = -1 / m * np.sum(np.dot(self.y, np.log(a_final.T)) 
-                               + np.dot((1-self.y), np.log(1 - a_final.T)))
+        m = np.size(self.x)[1]
+        a_final = self.full_forward_model()[0]
+        cost = - 1 / m * np.sum(np.dot(self.y, np.log(a_final.T)) +
+                                np.dot(1 - self.y, np.log((1 - a_final).T)))
         cost = np.squeeze(cost)
-        assert(cost.shape == ())
         return cost
+    
     
     def sigmoid_backward(self, a, activation):
         pass
@@ -110,38 +129,7 @@ class Neural_Network:
     
     def full_model_backward(self):
         pass
-=======
-    def full_forward_model(self):
-        
-        self.initialize_weights()
-        caches = []
-        a = self.x
-        for i in range(len(self.layer_dims) - 1):
-            a_prev = a
-            a, cache = self.forward_linear_activation(a_prev, 
-                                                 self.parameters["W" + str(i)],
-                                                 self.parameters["b" + str(i)],
-                                                 "relu")
-            caches.append(cache)
-        a_final, cache = self.forward_linear_activation(a, 
-                                                 self.parameters["W" + str(i)],
-                                                 self.parameters["b" + str(i)],
-                                                 "sigmoid")
-        caches.append(cache)
-        return a_final, caches
-    
-    def compute_cost(self):
-        """
-        Function to calculate the loss function
-        """
-        m = np.size(self.x)[1]
-        a_final = self.full_forward_model()[0]
-        cost = - 1 / m * np.sum(np.dot(self.y, np.log(a_final.T)) +
-                                np.dot(1 - self.y, np.log((1 - a_final).T)))
-        cost = np.squeeze(cost)
-        return cost
->>>>>>> master
-    
+
     def update_weights(self):
         pass
     
